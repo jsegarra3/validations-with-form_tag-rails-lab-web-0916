@@ -4,13 +4,20 @@ class AuthorsController < ApplicationController
   end
 
   def new
-    @author = Author.new
+    # binding.pry
+    @author ||= Author.new
   end
 
   def create
-    @author = Author.create(author_params)
-
-    redirect_to author_path(@author)
+    @author = Author.new(author_params)
+    @author.valid?
+    if @author.valid?
+      @author.save
+      redirect_to author_path(@author)
+    else
+      # binding.pry
+      render :new
+    end
   end
 
   private
